@@ -302,6 +302,27 @@
   .bracket-score::-webkit-inner-spin-button { -webkit-appearance: none; }
 
   .finale-slot { background: #fffbf0 !important; }
+  .winner-banner {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(200,154,42,0.15), rgba(200,154,42,0.05));
+    border: 1.5px solid rgba(200,154,42,0.4);
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+  .winner-banner-label {
+    font-size: 10px; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .winner-banner-name {
+    font-size: 15px; font-weight: 700;
+    color: var(--text); letter-spacing: 0.02em;
+  }
+  .winner-banner-name.pending {
+    font-size: 13px; font-weight: 500;
+    color: var(--text-muted); font-style: italic;
+  }
   .bracket-slot-name.pending { color: #bbb; font-style: italic; font-weight: 500; }
   .bracket-score:disabled { opacity: 0.35; cursor: not-allowed; }
   .bracket-score:focus { outline: none; border-color: var(--cp-green); background: white; }
@@ -489,16 +510,16 @@
 <footer>7° Torneo Padel Cosaporto &nbsp;·&nbsp; 7 Giugno 2026 &nbsp;·&nbsp; Tennis Club Parioli</footer>
 
 <script>
-const teamsA = ['ALE-CIV','BOT-FEN','NOT-MAR','MAN-PAR'];
+const teamsA = ['ALE-CIV','BOT-FEN','NOT-MAR','MAN-PAL'];
 const teamsB = ['COR-SCA','SIB-SAL','COR-BUO','MAN-DIF'];
 
 const matchesA = [
   {time:'09:00-09:30',t1:'ALE-CIV',t2:'BOT-FEN'},
-  {time:'09:30-10:00',t1:'NOT-MAR',t2:'MAN-PAR'},
-  {time:'10:00-10:30',t1:'ALE-CIV',t2:'MAN-PAR'},
+  {time:'09:30-10:00',t1:'NOT-MAR',t2:'MAN-PAL'},
+  {time:'10:00-10:30',t1:'ALE-CIV',t2:'MAN-PAL'},
   {time:'10:30-11:00',t1:'NOT-MAR',t2:'BOT-FEN'},
   {time:'11:00-11:30',t1:'ALE-CIV',t2:'NOT-MAR'},
-  {time:'11:30-12:00',t1:'BOT-FEN',t2:'MAN-PAR'},
+  {time:'11:30-12:00',t1:'BOT-FEN',t2:'MAN-PAL'},
 ];
 const matchesB = [
   {time:'09:00-09:30',t1:'COR-SCA',t2:'SIB-SAL'},
@@ -511,7 +532,7 @@ const matchesB = [
 
 const players = [
   {surname:'Noto',name:'Marcellino',code:'NOT-MAR',group:'A'},
-  {surname:'Manili',name:'Palermo',code:'MAN-PAR',group:'A'},
+  {surname:'Manili',name:'Palermo',code:'MAN-PAL',group:'A'},
   {surname:'Alessi',name:'Civita',code:'ALE-CIV',group:'A'},
   {surname:'Bottaro',name:'Fenati',code:'BOT-FEN',group:'A'},
   {surname:'Corsi',name:'Scapellato',code:'COR-SCA',group:'B'},
@@ -661,6 +682,33 @@ function renderBracket(containerId, prefix) {
     // Re-render to update finale slot names when semis change
     renderBracket(containerId, prefix);
   }));
+
+  // Winner banner
+  const emoji = prefix === 'gold' ? '🥇' : '🥈';
+  const label = prefix === 'gold' ? 'Vincitore Gold' : 'Vincitore Silver';
+  const finalWinner = (() => {
+    const sc = finalScores[prefix][2];
+    const slotA = semiWinner(0, rounds[0].a, rounds[0].b);
+    const slotB = semiWinner(1, rounds[1].a, rounds[1].b);
+    const s1 = parseInt(sc.s1), s2 = parseInt(sc.s2);
+    if (slotA === '—' || slotB === '—') return null;
+    if (isNaN(s1) || isNaN(s2) || sc.s1 === '' || sc.s2 === '') return null;
+    const winnerCode = s1 > s2 ? slotA : s2 > s1 ? slotB : null;
+    if (!winnerCode) return null;
+    // Resolve code to full names
+    const pair = players.filter(p => p.code === winnerCode);
+    if (pair.length === 2) return `${pair[0].surname} / ${pair[1].surname}`;
+    return winnerCode;
+  })();
+
+  const banner = document.createElement('div');
+  banner.className = 'winner-banner';
+  if (finalWinner) {
+    banner.innerHTML = `<div class="winner-banner-label">${emoji} ${label}</div><div class="winner-banner-name">${finalWinner}</div>`;
+  } else {
+    banner.innerHTML = `<div class="winner-banner-label">${emoji} ${label}</div><div class="winner-banner-name pending">Da definire</div>`;
+  }
+  el.appendChild(banner);
 }
 
 function updateBracket() {
