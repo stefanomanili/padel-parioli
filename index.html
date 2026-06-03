@@ -218,8 +218,8 @@
     letter-spacing: 0.1em; text-transform: uppercase;
     padding: 5px 16px; border-radius: 99px;
   }
-  .label-a { background: var(--cp-green-light); color: var(--cp-green-dark); }
-  .label-b { background: #fceaea; color: #8a1a1a; }
+  .label-blu { background: #dbeeff; color: #0a4a8a; }
+  .label-verde { background: #e6f7ed; color: #1a6b40; }
   .label-gold { background: var(--gold-light); color: #7a5200; }
   .label-silver { background: var(--silver-light); color: var(--silver); }
 
@@ -252,6 +252,30 @@
   .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .score-input:focus { outline: none; border-color: var(--cp-green); }
   .vs { text-align: center; font-size: 10px; color: #bbb; font-weight: 700; }
+
+
+  /* ── CAMPI ── */
+  .campi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 700px) { .campi-grid { grid-template-columns: 1fr; } }
+  .label-campo { background: #f0f0f0; color: #444; }
+  .match-row-campo {
+    display: flex; flex-direction: column;
+    padding: 8px 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); background: #fafaf9;
+    margin-bottom: 6px; gap: 4px;
+    transition: background 0.15s;
+  }
+  .match-row-campo:hover { background: #f0f4f1; }
+  .campo-time { font-size: 10px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.02em; }
+  .campo-teams { display: flex; align-items: center; gap: 6px; }
+  .campo-team { font-size: 12px; font-weight: 700; color: var(--text); flex: 1; }
+  .campo-team.right { text-align: right; }
+  .campo-score { width: 32px; height: 26px; text-align: center; border: 1.5px solid var(--border); border-radius: 5px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); background: white; -moz-appearance: textfield; }
+  .campo-score::-webkit-outer-spin-button, .campo-score::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .campo-score:focus { outline: none; border-color: var(--cp-green); }
+  .campo-girone-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 99px; display: inline-block; align-self: flex-start; }
+  .campo-girone-badge.code-blu { background: #dbeeff; color: #0a4a8a; }
+  .campo-girone-badge.code-verde { background: #e6f7ed; color: #1a6b40; }
 
   /* ── CLASSIFICA ── */
   .standings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -340,8 +364,8 @@
   .player-avatar-placeholder { width: 52px; height: 72px; border-radius: 6px; background: var(--bg); border: 1.5px dashed var(--border); flex-shrink: 0; }
   .player-full-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
   .player-code { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 99px; display: inline-block; }
-  .code-a { background: var(--cp-green-light); color: var(--cp-green-dark); }
-  .code-b { background: #fceaea; color: #8a1a1a; }
+  .code-blu { background: #dbeeff; color: #0a4a8a; }
+  .code-verde { background: #e6f7ed; color: #1a6b40; }
 
 
   /* ── SPONSOR BAR ── */
@@ -433,13 +457,19 @@
 
   <!-- GIRONI -->
   <div id="gironi" class="section active">
-    <div class="card">
-      <div class="girone-title"><span class="girone-label label-a">Girone A</span></div>
-      <div id="matches-a"></div>
-    </div>
-    <div class="card">
-      <div class="girone-title"><span class="girone-label label-b">Girone B</span></div>
-      <div id="matches-b"></div>
+    <div class="campi-grid">
+      <div class="card">
+        <div class="girone-title"><span class="girone-label label-campo">Campo 2</span></div>
+        <div id="campo2-matches"></div>
+      </div>
+      <div class="card">
+        <div class="girone-title"><span class="girone-label label-campo">Campo 3</span></div>
+        <div id="campo3-matches"></div>
+      </div>
+      <div class="card">
+        <div class="girone-title"><span class="girone-label label-campo">Campo 4</span></div>
+        <div id="campo4-matches"></div>
+      </div>
     </div>
   </div>
 
@@ -447,17 +477,17 @@
   <div id="classifica" class="section">
     <div class="standings-grid">
       <div class="card">
-        <div class="girone-title"><span class="girone-label label-a">Girone A</span></div>
+        <div class="girone-title"><span class="girone-label label-blu">Girone Blu</span></div>
         <table class="standings-table">
           <thead><tr><th>#</th><th>Coppia</th><th class="center">V</th><th class="center">P</th><th class="center">+/−</th><th class="center">Pts</th></tr></thead>
-          <tbody id="tbody-a"></tbody>
+          <tbody id="tbody-blu"></tbody>
         </table>
       </div>
       <div class="card">
-        <div class="girone-title"><span class="girone-label label-b">Girone B</span></div>
+        <div class="girone-title"><span class="girone-label label-verde">Girone Verde</span></div>
         <table class="standings-table">
           <thead><tr><th>#</th><th>Coppia</th><th class="center">V</th><th class="center">P</th><th class="center">+/−</th><th class="center">Pts</th></tr></thead>
-          <tbody id="tbody-b"></tbody>
+          <tbody id="tbody-verde"></tbody>
         </table>
       </div>
     </div>
@@ -481,12 +511,12 @@
   <!-- PARTECIPANTI -->
   <div id="partecipanti" class="section">
     <div class="card">
-      <div class="girone-title" style="margin-bottom:1rem;"><span class="girone-label label-a">Girone A</span></div>
-      <div class="players-grid" id="players-a"></div>
+      <div class="girone-title" style="margin-bottom:1rem;"><span class="girone-label label-blu">Girone Blu</span></div>
+      <div class="players-grid" id="players-blu"></div>
     </div>
     <div class="card">
-      <div class="girone-title" style="margin-bottom:1rem;"><span class="girone-label label-b">Girone B</span></div>
-      <div class="players-grid" id="players-b"></div>
+      <div class="girone-title" style="margin-bottom:1rem;"><span class="girone-label label-verde">Girone Verde</span></div>
+      <div class="players-grid" id="players-verde"></div>
     </div>
   </div>
 
@@ -519,20 +549,20 @@ const teamsA = ['ALE-CIV','BOT-BOT','NOT-MAR','MAN-PAL'];
 const teamsB = ['COR-SCA','SIB-SAL','COR-BUO','MAN-DIF'];
 
 const matchesA = [
-  {time:'09:00-09:30',t1:'ALE-CIV',t2:'BOT-BOT'},
-  {time:'09:30-10:00',t1:'NOT-MAR',t2:'MAN-PAL'},
-  {time:'10:00-10:30',t1:'ALE-CIV',t2:'MAN-PAL'},
-  {time:'10:30-11:00',t1:'NOT-MAR',t2:'BOT-BOT'},
-  {time:'11:00-11:30',t1:'ALE-CIV',t2:'NOT-MAR'},
-  {time:'11:30-12:00',t1:'BOT-BOT',t2:'MAN-PAL'},
+  {time:'10:00-10:30', campo:'C2', t1:'ALE-CIV', t2:'BOT-BOT'},
+  {time:'10:30-11:00', campo:'C2', t1:'ALE-CIV', t2:'MAN-PAL'},
+  {time:'10:30-11:00', campo:'C4', t1:'NOT-MAR', t2:'BOT-BOT'},
+  {time:'11:00-11:30', campo:'C2', t1:'BOT-BOT', t2:'MAN-PAL'},
+  {time:'11:30-12:00', campo:'C2', t1:'ALE-CIV', t2:'NOT-MAR'},
+  {time:'11:30-12:00', campo:'C4', t1:'NOT-MAR', t2:'MAN-PAL'},
 ];
 const matchesB = [
-  {time:'09:00-09:30',t1:'COR-SCA',t2:'SIB-SAL'},
-  {time:'09:30-10:00',t1:'COR-BUO',t2:'MAN-DIF'},
-  {time:'10:00-10:30',t1:'COR-SCA',t2:'MAN-DIF'},
-  {time:'10:30-11:00',t1:'COR-BUO',t2:'SIB-SAL'},
-  {time:'11:00-11:30',t1:'COR-SCA',t2:'COR-BUO'},
-  {time:'11:30-12:00',t1:'SIB-SAL',t2:'MAN-DIF'},
+  {time:'10:00-10:30', campo:'C3', t1:'COR-SCA', t2:'SIB-SAL'},
+  {time:'10:00-10:30', campo:'C4', t1:'COR-BUO', t2:'MAN-DIF'},
+  {time:'10:30-11:00', campo:'C3', t1:'COR-SCA', t2:'MAN-DIF'},
+  {time:'11:00-11:30', campo:'C3', t1:'COR-SCA', t2:'COR-BUO'},
+  {time:'11:00-11:30', campo:'C4', t1:'SIB-SAL', t2:'MAN-DIF'},
+  {time:'11:30-12:00', campo:'C3', t1:'COR-BUO', t2:'SIB-SAL'},
 ];
 
 const playerPhotos = {
@@ -546,41 +576,67 @@ const playerPhotos = {
 };
 
 const players = [
-  {surname:'Noto',name:'Marcellino',code:'NOT-MAR',group:'A'},
-  {surname:'Manili',name:'Palermo',code:'MAN-PAL',group:'A'},
-  {surname:'Alessi',name:'Civita',code:'ALE-CIV',group:'A'},
-  {surname:'Bottaro R.',name:'Bottaro A.',code:'BOT-BOT',group:'A'},
-  {surname:'Corsi',name:'Scapellato',code:'COR-SCA',group:'B'},
-  {surname:'Sibilla',name:'Salvini',code:'SIB-SAL',group:'B'},
-  {surname:'Cornetti',name:'Buonpensiere',code:'COR-BUO',group:'B'},
-  {surname:'Manfredonia',name:'Di Fabio',code:'MAN-DIF',group:'B'},
+  {surname:'Noto',name:'Marcellino',code:'NOT-MAR',group:'BLU'},
+  {surname:'Manili',name:'Palermo',code:'MAN-PAL',group:'BLU'},
+  {surname:'Alessi',name:'Civita',code:'ALE-CIV',group:'BLU'},
+  {surname:'Bottaro R.',name:'Bottaro A.',code:'BOT-BOT',group:'BLU'},
+  {surname:'Corsi',name:'Scapellato',code:'COR-SCA',group:'VER'},
+  {surname:'Sibilla',name:'Salvini',code:'SIB-SAL',group:'VER'},
+  {surname:'Cornetti',name:'Buonpensiere',code:'COR-BUO',group:'VER'},
+  {surname:'Manfredonia',name:'Di Fabio',code:'MAN-DIF',group:'VER'},
 ];
 
-const scores = {A:{}, B:{}};
-matchesA.forEach((_,i) => scores.A[i]={s1:'',s2:''});
-matchesB.forEach((_,i) => scores.B[i]={s1:'',s2:''});
+const scores = {BLU:{}, VER:{}};
+matchesA.forEach((_,i) => scores.BLU[i]={s1:'',s2:''});
+matchesB.forEach((_,i) => scores.VER[i]={s1:'',s2:''});
 const finalScores = {
   gold:[{s1:'',s2:''},{s1:'',s2:''},{s1:'',s2:''}],
   silver:[{s1:'',s2:''},{s1:'',s2:''},{s1:'',s2:''}]
 };
 
 function renderMatches(containerId, matches, group) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = '';
-  matches.forEach((m,i) => {
+  // No-op for hidden divs — scores already managed by renderCampi
+}
+
+function renderCampi() {
+  const campoIds = {C2:'campo2-matches', C3:'campo3-matches', C4:'campo4-matches'};
+  // Clear
+  Object.values(campoIds).forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML=''; });
+
+  // Unified list with group tag
+  const all = [
+    ...matchesA.map((m,i) => ({...m, group:'BLU', idx:i})),
+    ...matchesB.map((m,i) => ({...m, group:'VER', idx:i})),
+  ];
+
+  // Sort by time then campo
+  all.sort((a,b) => a.time.localeCompare(b.time) || a.campo.localeCompare(b.campo));
+
+  all.forEach(m => {
+    const el = document.getElementById(campoIds[m.campo]);
+    if (!el) return;
+    const sc = scores[m.group][m.idx];
+    const badgeClass = m.group === 'BLU' ? 'code-blu' : 'code-verde';
+    const badgeLabel = m.group === 'BLU' ? 'BLU' : 'VERDE';
     const row = document.createElement('div');
-    row.className = 'match-row';
+    row.className = 'match-row-campo';
     row.innerHTML = `
-      <span class="match-time">${m.time}</span>
-      <span class="team right">${m.t1}</span>
-      <input class="score-input" type="number" min="0" max="99" placeholder="-" value="${scores[group][i].s1}" data-g="${group}" data-i="${i}" data-s="s1">
-      <span class="vs">vs</span>
-      <input class="score-input" type="number" min="0" max="99" placeholder="-" value="${scores[group][i].s2}" data-g="${group}" data-i="${i}" data-s="s2">
-      <span class="team">${m.t2}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span class="campo-time">${m.time}</span>
+        <span class="campo-girone-badge ${badgeClass}">${badgeLabel}</span>
+      </div>
+      <div class="campo-teams">
+        <span class="campo-team right">${m.t1}</span>
+        <input class="campo-score" type="number" min="0" max="99" placeholder="-" value="${sc.s1}" data-g="${m.group}" data-i="${m.idx}" data-s="s1">
+        <span class="vs" style="font-size:9px;color:#bbb;font-weight:700;">vs</span>
+        <input class="campo-score" type="number" min="0" max="99" placeholder="-" value="${sc.s2}" data-g="${m.group}" data-i="${m.idx}" data-s="s2">
+        <span class="campo-team">${m.t2}</span>
+      </div>
     `;
     el.appendChild(row);
   });
-  el.querySelectorAll('.score-input').forEach(inp => inp.addEventListener('input', e => {
+
+  document.querySelectorAll('.campo-score').forEach(inp => inp.addEventListener('input', e => {
     const {g,i,s} = e.target.dataset;
     scores[g][i][s] = e.target.value;
     updateStandings();
@@ -611,11 +667,11 @@ function formatDiff(d) {
 }
 
 function updateStandings() {
-  ['A','B'].forEach(g => {
-    const teams = g==='A' ? teamsA : teamsB;
-    const matches = g==='A' ? matchesA : matchesB;
+  ['BLU','VER'].forEach(g => {
+    const teams = g==='BLU' ? teamsA : teamsB;
+    const matches = g==='BLU' ? matchesA : matchesB;
     const st = calcStandings(teams, matches, g);
-    const tbody = document.getElementById('tbody-'+g.toLowerCase());
+    const tbody = document.getElementById(g==='BLU' ? 'tbody-blu' : 'tbody-verde');
     tbody.innerHTML = '';
     st.forEach((d,idx) => {
       const fd = formatDiff(d.diff);
@@ -640,17 +696,17 @@ function getTop(teams, matches, grp, n) {
 
 function renderBracket(containerId, prefix) {
   const el = document.getElementById(containerId);
-  const topA = getTop(teamsA, matchesA, 'A', 4);
-  const topB = getTop(teamsB, matchesB, 'B', 4);
+  const topA = getTop(teamsA, matchesA, 'BLU', 4);
+  const topB = getTop(teamsB, matchesB, 'VER', 4);
   // Gold:   Semi1 = 1°A vs 2°B  |  Semi2 = 1°B vs 2°A
   // Silver: Semi1 = 3°A vs 4°B  |  Semi2 = 3°B vs 4°A
   const rounds = prefix==='gold' ? [
-    {label:'12:00–12:30 · Semifinale 1', a: topA[0]||'1° Girone A', b: topB[1]||'2° Girone B', si:0},
-    {label:'12:30–13:00 · Semifinale 2', a: topB[0]||'1° Girone B', b: topA[1]||'2° Girone A', si:1},
+    {label:'12:00–12:30 · Semifinale 1', a: topA[0]||'1° Girone Verde', b: topB[1]||'2° Girone Verde', si:0},
+    {label:'12:30–13:00 · Semifinale 2', a: topB[0]||'1° Girone Verde', b: topA[1]||'2° Girone Verde', si:1},
     {label:'13:00–13:30 · Finale Gold 🥇', a:'Vincitore Semi 1', b:'Vincitore Semi 2', si:2},
   ] : [
-    {label:'12:00–12:30 · Semifinale 1', a: topA[2]||'3° Girone A', b: topB[3]||'4° Girone B', si:0},
-    {label:'12:30–13:00 · Semifinale 2', a: topB[2]||'3° Girone B', b: topA[3]||'4° Girone A', si:1},
+    {label:'12:00–12:30 · Semifinale 1', a: topA[2]||'3° Girone Verde', b: topB[3]||'4° Girone Verde', si:0},
+    {label:'12:30–13:00 · Semifinale 2', a: topB[2]||'3° Girone Verde', b: topA[3]||'4° Girone Verde', si:1},
     {label:'13:00–13:30 · Finale Silver 🥈', a:'Vincitore Semi 1', b:'Vincitore Semi 2', si:2},
   ];
   el.innerHTML='';
@@ -732,8 +788,8 @@ function updateBracket() {
 }
 
 function renderPlayers() {
-  ['A','B'].forEach(g => {
-    const el = document.getElementById('players-'+g.toLowerCase());
+  ['BLU','VER'].forEach(g => {
+    const el = document.getElementById(g==='BLU' ? 'players-blu' : 'players-verde');
     el.innerHTML='';
     players.filter(p=>p.group===g).forEach(p => {
       const div = document.createElement('div');
@@ -747,7 +803,7 @@ function renderPlayers() {
       div.innerHTML=`
         <div class="player-names">
           <div class="player-full-name">${p.surname} / ${p.name}</div>
-          <span class="player-code code-${g.toLowerCase()}">${p.code}</span>
+          <span class="player-code code-${g==='BLU' ? 'blu' : 'verde'}">${p.code}</span>
         </div>
         <div class="player-photos">
           ${avatar(p.surname, photo1)}
@@ -769,8 +825,7 @@ function showTab(name) {
   if(name==='finale') updateBracket();
 }
 
-renderMatches('matches-a', matchesA, 'A');
-renderMatches('matches-b', matchesB, 'B');
+renderCampi();
 renderPlayers();
 updateStandings();
 </script>
